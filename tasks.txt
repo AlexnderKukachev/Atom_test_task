@@ -1,0 +1,65 @@
+1. https://t.me/alexander_kukachov
+2. 15000
+3.
+4. 40
+5. 1. Узнать точные действия предпринятые пользователем, куда нажал, какие данные отправил и т.п.
+    2. Повторить все что делал пользователь и получить такой же результат.
+    3. Провести дебаггинг и выяснить в чём причина.
+    4. Починить.
+6. Не работал с Django, но я бы использовал модуль threading для создания параллельных потоков.
+7. # Проблема в том,что в коде выше в lambda функцию не передаётся аргумент step
+
+def create_handlers(callback) -> list:
+   # добавляем обработчики для каждого шага (от 0 до 4)
+   handlers = [lambda step = step: callback(step) for step in range(5)]
+   return handlers
+
+def execute_handlers(handlers: list) -> None:
+  # запускаем добавленные обработчики (шаги от 0 до 4)
+  for handler in handlers:
+     handler()
+8. def del_duplicates(input: list) -> list:
+    if not isinstance(input, list):
+        raise TypeError('Invalide input data type')
+    res = []
+    for i in input:
+        if i not in res:
+            res.append(i)
+    return res
+9. from bs4 import BeautifulSoup
+from requests import get, exceptions
+
+
+def count_tags():
+    number_of_tags = 0
+    tags_with_attrs = 0
+
+    url = 'https://jetlend.ru/'
+    try:
+        response = get(url)
+    except exceptions.ConnectionError:
+        print(f'Service - {url} is not available')
+        return
+    content = response.text
+    soup = BeautifulSoup(content, "html.parser")
+    for child in soup.recursiveChildGenerator():
+        if child.name:
+            number_of_tags += 1
+            if child.attrs:
+                tags_with_attrs += 1
+    print(f'Tags on the page - {number_of_tags}')
+    print(f'Tags with attributes on the page - {tags_with_attrs}')
+
+
+if __name__ == '__main__':
+    count_tags()
+10.
+11. def get_ip() -> str:
+    from requests import get, exceptions
+    url = 'https://ifconfig.me/ip'
+    try:
+        response = get(url)
+    except exceptions.ConnectionError:
+        return f'Service - {url} is not available'
+    return response.content.decode()
+12.
